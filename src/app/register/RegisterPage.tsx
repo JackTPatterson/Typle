@@ -4,10 +4,10 @@ import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {Label} from "@/components/ui/label";
 import React, {FormEvent} from "react";
-import {cn} from "@/lib/utils";
 import {registerUser} from "@/app/register/actions";
+import {toast} from "@/hooks/use-toast";
 
-export function RegisterForm({ className, ...props }: React.ComponentProps<"div">) {
+export function RegisterForm() {
 
 
     async function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -16,22 +16,21 @@ export function RegisterForm({ className, ...props }: React.ComponentProps<"div"
 
         const formData = new FormData(event.currentTarget)
 
-        if(formData.get("password") !== formData.get("verify-password")) return alert('Passwords do not match')
+        if(formData.get("password") !== formData.get("verify-password")) return toast({title: 'Error Registering', description: 'Passwords do not match'})
 
-        console.log(formData)
 
         const {error} = await registerUser(
             formData.get("email") as string,
             formData.get("password") as string,
         )
 
-        if(error) return alert(error)
+        if(error) toast({title: 'Error Registering', description: error.message})
 
     }
 
 
     return (
-        <div className={cn("flex flex-col gap-6", className)} {...props}>
+        <div className={"flex flex-col gap-6"}>
 
                     <form onSubmit={onSubmit} className="p-6 md:p-8">
                         <div className="flex flex-col gap-6">

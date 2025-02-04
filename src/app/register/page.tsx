@@ -1,6 +1,12 @@
 import {KeyboardIcon} from "lucide-react";
 import React from "react";
 import {RegisterForm} from "@/app/register/RegisterPage";
+import type {Metadata} from "next";
+import {TypingAnimation} from "@/components/ui/typing-animation";
+
+export const metadata: Metadata = {
+    title: "Register",
+};
 
 export default function Register(){
     return <div className="grid min-h-svh lg:grid-cols-2">
@@ -20,7 +26,11 @@ export default function Register(){
                 </div>
             </div>
         </div>
-        <div className="relative hidden bg-muted lg:block bg-blue-100"/>
+        <div className="relative hidden bg-muted lg:block bg-blue-100">
+            <TypingAnimation
+                className={'absolute lg:left-16 xl:left-32 lg:max-w-sm xl:max-w-lg leading-10 top-40 text-left '}>Take
+                today&apos;s typing challenge. You only get one shot per day, so make it count!</TypingAnimation>
+        </div>
 
     </div>
 }

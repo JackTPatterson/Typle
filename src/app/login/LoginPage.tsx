@@ -4,10 +4,10 @@ import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {Label} from "@/components/ui/label";
 import React, {FormEvent} from "react";
-import {cn} from "@/lib/utils";
 import {loginUser} from "@/app/login/actions";
+import {toast} from "@/hooks/use-toast";
 
-export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
+export function LoginForm() {
 
     async function onSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
@@ -18,12 +18,13 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
             formData.get("password") as string,
         )
 
-        if(error) return alert(error)
+        if(error) toast({title: 'Error Logging In', description: error.message})
+
 
     }
 
     return (
-        <div className={cn("flex flex-col gap-6", className)} {...props}>
+        <div className={"flex flex-col gap-6"}>
 
                     <form onSubmit={onSubmit} className="p-6 md:p-8">
                         <div className="flex flex-col gap-6">
@@ -33,7 +34,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
                             </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="email">Email</Label>
-                                <Input id="email" type="email" name={'email'} placeholder="m@example.com" required />
+                                <Input id="email" type="email" name={'email'} placeholder="email@example.com" required />
                             </div>
                             <div className="grid gap-2">
                                 <div className="flex items-center">
