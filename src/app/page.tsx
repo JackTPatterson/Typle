@@ -1,3 +1,5 @@
+'use client'
+
 import Image from "next/image";
 
 import {HandHelping, KeyboardIcon, Users, Zap} from "lucide-react";
@@ -5,45 +7,10 @@ import {NavigationMenu, NavigationMenuLink, NavigationMenuList} from "@/componen
 import Link from "next/link";
 import React from "react";
 
-
-
-
 export default function Home() {
   return (
       <div className="flex flex-col min-h-screen  mx-auto bg-white dark:bg-gray-900">
-        <div className="w-full px-4 py-6 flex items-center justify-between">
-          <div className="flex justify-center gap-2 md:justify-start">
-            <a href="#" className="flex items-center gap-2 font-medium">
-              <div
-                  className="flex h-6 w-6 items-center justify-center rounded-md bg-blue-300 text-primary-foreground">
-                <KeyboardIcon className="size-4"/>
-              </div>
-              Typle
-            </a>
-          </div>
-          <NavigationMenu>
-            <NavigationMenuList className="flex gap-4">
-              <NavigationMenuLink asChild>
-                <Link
-                    href="#"
-                    className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100"
-                    prefetch={false}
-                >
-                  Home
-                </Link>
-              </NavigationMenuLink>
-              <NavigationMenuLink asChild>
-                <Link
-                    href="#"
-                    className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100"
-                    prefetch={false}
-                >
-                  Take a Test
-                </Link>
-              </NavigationMenuLink>
-            </NavigationMenuList>
-          </NavigationMenu>
-        </div>
+
         <div className="flex-1">
           <section className="w-full py-12 md:py-24 lg:py-32 mx-auto">
             <div className="px-4 md:px-6">
