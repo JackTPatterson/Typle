@@ -11,10 +11,13 @@
   "dependencies": {
     "@number-flow/react": "^0.5.8",
     "@radix-ui/react-dialog": "^1.1.6",
+    "@radix-ui/react-dropdown-menu": "^2.1.7",
     "@radix-ui/react-label": "^2.1.1",
     "@radix-ui/react-navigation-menu": "^1.2.4",
     "@radix-ui/react-slot": "^1.1.1",
+    "@radix-ui/react-tabs": "^1.1.4",
     "@radix-ui/react-toast": "^1.2.5",
+    "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.49.1",
     "@uidotdev/usehooks": "^2.4.1-experimental.1",
@@ -27,6 +30,7 @@
     "react-aria": "^3.38.1",
     "react-dom": "^0.0.0-experimental-63779030-20250328",
     "react-simple-keyboard": "^3.8.49",
+    "recharts": "^2.15.2",
     "tailwind-merge": "^3.0.1",
     "tailwindcss-animate": "^1.0.7"
   },

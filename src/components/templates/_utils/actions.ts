@@ -1,6 +1,6 @@
 'use server'
 
-import {createClient} from "@/lib/db/sbserver";
+import {createClient} from "@/db/sbserver";
 
 export const getUser = async() => {
     const supabase = await createClient()

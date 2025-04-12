@@ -1,60 +1,83 @@
+"use client"
 
-import {KeyboardIcon} from "lucide-react";
-import React, {useEffect, useState} from "react";
-import {getUser} from "@/components/templates/_utils/actions";
-import {NavigationMenu, NavigationMenuLink, NavigationMenuList} from "@/components/ui/navigation-menu";
-import Link from "next/link";
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { User } from "@supabase/supabase-js"
+import { createBrowserClient } from "@supabase/ssr"
+import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { UserCircle, Bell } from "lucide-react"
 
-export const Header = () => {
+interface HeaderProps {
+  user: User | null
+}
 
-    const [user, setUser] = useState<any>();
+export default function Header({ user }: HeaderProps) {
+  const pathname = usePathname()
+  const supabase = createBrowserClient(
+    "https://ribcayxeubylkmwsqnef.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJpYmNheXhldWJ5bGttd3NxbmVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg2MTQ4NjIsImV4cCI6MjA1NDE5MDg2Mn0.6ia2H0ADkleHwzBDbuzI8UfAgaMTEWL7tc3wY1SDahI"
+  )
 
-    useEffect(() => {
-        getUser().then((res=>{
-            setUser(res)
-        }))
-    }, []);
+  const handleSignOut = async () => {
+    await supabase.auth.signOut()
+  }
 
-    return <div className="flex justify-center gap-2 md:justify-start p-6 md:p-10">
-        <div className="w-full px-4 py-6 flex items-center justify-between">
-            <div className="flex justify-center gap-2 md:justify-start">
-                <a href="#" className="flex items-center gap-2 font-medium">
-                    <div
-                        className="flex h-6 w-6 items-center justify-center rounded-md bg-blue-300 text-primary-foreground">
-                        <KeyboardIcon className="size-4"/>
-                    </div>
-                    Typle
-                </a>
-            </div>
-            <NavigationMenu>
-                <NavigationMenuList className="flex gap-4">
-                    <NavigationMenuLink asChild>
-                        <Link
-                            href="#"
-                            className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100"
-                            prefetch={false}
-                        >
-                            Home
-                        </Link>
-                    </NavigationMenuLink>
-                    <NavigationMenuLink asChild>
-                        <Link
-                            href="#"
-                            className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100"
-                            prefetch={false}
-                        >
-                            Take a Test
-                        </Link>
-                    </NavigationMenuLink>
-                </NavigationMenuList>
-            </NavigationMenu>
+  return (
+    <header className="sticky top-0 z-50 w-full border-b bg-white">
+      <div className="mx-auto max-w-7xl flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center space-x-8">
+          <Link href="/" className="flex items-center space-x-2">
+            <span className="text-xl font-bold">Typle</span>
+          </Link>
+          <nav className="hidden md:flex items-center space-x-6">
+
+            <Link
+              href="/test"
+              className={`text-sm transition-colors hover:text-gray-600 ${
+                pathname === "/test" ? "text-gray-900" : "text-gray-500"
+              }`}
+            >
+              Take Todays Test
+            </Link>
+
+          </nav>
         </div>
-        {
-            user && <div className={'bg-neutral-200 p-2 size-10 flex justify-center items-center rounded-full'}>
-                {(user.user.email[0].toUpperCase())}
-            </div>
-        }
 
+        <div className="flex items-center space-x-4">
 
-    </div>
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="rounded-full">
+                    <UserCircle />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel>{user.email}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link href="/profile">Profile</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleSignOut}>
+                  Sign out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button asChild variant="ghost">
+              <Link href="/login">Sign in</Link>
+            </Button>
+          )}
+        </div>
+      </div>
+    </header>
+  )
 }
