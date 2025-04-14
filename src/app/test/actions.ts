@@ -32,11 +32,10 @@ export const saveTest = async (test: {
 
     axios.request(config)
     .then((response) => {
-    console.log(JSON.stringify(response.data));
-    redirect("/path"); 
+        console.log(JSON.stringify(response.data));
     })
     .catch((error) => {
-    console.log(error);
+        console.log(error);
     });
 
 }

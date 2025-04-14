@@ -15,10 +15,12 @@ import {
 } from "@/components/ui/dialog";
 import { saveTest } from './actions';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useRouter } from 'next/navigation';
 
 export function TestPage({prompt, user, is_benchmark, has_completed_daily_challenge}: {prompt: string, user: string, is_benchmark: boolean, has_completed_daily_challenge: boolean}) {
 
     const words = prompt
+    const router = useRouter()
 
     const [events, setEvents] = React.useState<string>();
     const [currIndex, setCurrIndex] = useState<number>(0)
@@ -236,7 +238,8 @@ export function TestPage({prompt, user, is_benchmark, has_completed_daily_challe
                                     accuracy: parseFloat(calculateAccuracy()),
                                     wpm: parseFloat(wpm)
                                 })
-                            }} type="submit">Close</Button>
+                                router.push("/profile")
+                            }}>Close</Button>
                         </DialogClose>
                     </DialogFooter>
                 </DialogContent>
