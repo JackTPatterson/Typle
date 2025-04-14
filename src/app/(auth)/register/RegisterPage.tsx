@@ -6,24 +6,36 @@ import {Label} from "@/components/ui/label";
 import React, {FormEvent} from "react";
 import {registerUser} from "@/app/(auth)/register/actions";
 import {toast} from "@/hooks/use-toast";
+import {useRouter} from "next/navigation";
 
 export function RegisterForm() {
 
+    const router = useRouter()
 
     async function onSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
 
         const formData = new FormData(event.currentTarget)
 
-        if(formData.get("password") !== formData.get("verify-password")) return toast({title: 'Error Registering', description: 'Passwords do not match'})
+        if(formData.get("password") !== formData.get("verify-password")) {
+            toast({title: 'Error Registering', description: 'Passwords do not match'})
+            return
+        }
 
-
-        const {error} = await registerUser(
+        const {data, error} = await registerUser(
             formData.get("email") as string,
             formData.get("password") as string,
         )
 
-        if(error) toast({title: 'Error Registering', description: error.message})
+        if(error) {
+            console.log(error)
+            toast({title: 'Error Registering', description: "Email already in use"})
+            return
+        }
+
+        if(data || !error) {
+            router.push('/')
+        }
 
     }
 
@@ -47,7 +59,7 @@ export function RegisterForm() {
                                 </div>
                                 <Input id="verify-password" type="password" name={'password'} required/>
 
-                                <div className="flex items-center">
+                                <div className="flex items-center mt-4">
                                     <Label htmlFor="verify-password">Verify Password</Label>
                                 </div>
                                 <Input id="verify-password" type="password" name={'verify-password'} required/>

@@ -1,9 +1,5 @@
 'use client'
 
-import Image from "next/image";
-
-import {HandHelping, KeyboardIcon, Users, Zap} from "lucide-react";
-import {NavigationMenu, NavigationMenuLink, NavigationMenuList} from "@/components/ui/navigation-menu";
 import Link from "next/link";
 import React from "react";
 

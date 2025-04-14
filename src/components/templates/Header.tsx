@@ -3,7 +3,6 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { User } from "@supabase/supabase-js"
-import { createBrowserClient } from "@supabase/ssr"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -13,7 +12,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { UserCircle, Bell } from "lucide-react"
+import { UserCircle } from "lucide-react"
+import { signOut } from "./_utils/actions"
 
 interface HeaderProps {
   user: User | null
@@ -21,13 +21,9 @@ interface HeaderProps {
 
 export default function Header({ user }: HeaderProps) {
   const pathname = usePathname()
-  const supabase = createBrowserClient(
-    "https://ribcayxeubylkmwsqnef.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJpYmNheXhldWJ5bGttd3NxbmVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg2MTQ4NjIsImV4cCI6MjA1NDE5MDg2Mn0.6ia2H0ADkleHwzBDbuzI8UfAgaMTEWL7tc3wY1SDahI"
-  )
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut()
+    await signOut()
   }
 
   return (

@@ -6,98 +6,90 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useEffect, useState } from 'react'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 
-interface TypingStats {
-  wpm: number
-  accuracy: number
-  timestamp: string
-  testType: string
-}
-
-interface ProfilePageProps {
-  user: any
-  stats: TypingStats[]
-  isLoading?: boolean
-}
-
-export function ProfilePage({ user, stats, isLoading = false }: ProfilePageProps) {
+export function ProfilePage({ user, stats }: { user: any, stats: any }) {
   const [activeTab, setActiveTab] = useState('overview')
+  const [selectedPrompt, setSelectedPrompt] = useState<string | null>(null)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
 
-  useEffect(() => {
-    console.log(user)
-  }, [user])
-
-  const averageWPM = stats.length > 0
-    ? Math.round(stats.reduce((acc, curr) => acc + curr.wpm, 0) / stats.length)
+  const averageWPM = stats?.length > 0
+    ? Math.round(stats.reduce((acc: any, curr: any) => acc + curr.wpm, 0) / stats.length)
     : 0
 
-  const averageAccuracy = stats.length > 0
-    ? Math.round(stats.reduce((acc, curr) => acc + curr.accuracy, 0) / stats.length)
+  const averageAccuracy = stats?.length > 0
+    ? Math.round(stats.reduce((acc: any, curr: any) => acc + curr.accuracy, 0) / stats.length)
     : 0
 
-  const bestWPM = stats.length > 0
-    ? Math.max(...stats.map(s => s.wpm))
+  const bestWPM = stats?.length > 0
+    ? Math.max(...stats.map((s: any) => s.wpm))
     : 0
 
-  if (isLoading) {
-    return (
-      <div className="container mx-auto py-10">
-        <div className="flex flex-col gap-8">
-          <div>
-            <Skeleton className="h-10 w-48" />
-            <Skeleton className="h-5 w-64 mt-2" />
-          </div>
+//   if (isLoading) {
+//     return (
+//       <div className="container mx-auto py-10">
+//         <div className="flex flex-col gap-8">
+//           <div>
+//             <Skeleton className="h-10 w-48" />
+//             <Skeleton className="h-5 w-64 mt-2" />
+//           </div>
 
-          <div className="grid gap-4 md:grid-cols-3">
-            {[1, 2, 3].map((i) => (
-              <Card key={i}>
-                <CardHeader>
-                  <Skeleton className="h-6 w-32" />
-                  <Skeleton className="h-4 w-48 mt-2" />
-                </CardHeader>
-                <CardContent>
-                  <Skeleton className="h-10 w-24" />
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+//           <div className="grid gap-4 md:grid-cols-3">
+//             {[1, 2, 3].map((i) => (
+//               <Card key={i}>
+//                 <CardHeader>
+//                   <Skeleton className="h-6 w-32" />
+//                   <Skeleton className="h-4 w-48 mt-2" />
+//                 </CardHeader>
+//                 <CardContent>
+//                   <Skeleton className="h-10 w-24" />
+//                 </CardContent>
+//               </Card>
+//             ))}
+//           </div>
 
-          <Card>
-            <CardHeader>
-              <Skeleton className="h-6 w-40" />
-              <Skeleton className="h-4 w-56 mt-2" />
-            </CardHeader>
-            <CardContent>
-              <Skeleton className="h-[300px] w-full" />
-            </CardContent>
-          </Card>
+//           <Card>
+//             <CardHeader>
+//               <Skeleton className="h-6 w-40" />
+//               <Skeleton className="h-4 w-56 mt-2" />
+//             </CardHeader>
+//             <CardContent>
+//               <Skeleton className="h-[300px] w-full" />
+//             </CardContent>
+//           </Card>
 
-          <Card>
-            <CardHeader>
-              <Skeleton className="h-6 w-32" />
-              <Skeleton className="h-4 w-48 mt-2" />
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <div key={i} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div>
-                      <Skeleton className="h-5 w-24" />
-                      <Skeleton className="h-4 w-32 mt-2" />
-                    </div>
-                    <div className="text-right">
-                      <Skeleton className="h-5 w-16" />
-                      <Skeleton className="h-4 w-24 mt-2" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    )
-  }
+//           <Card>
+//             <CardHeader>
+//               <Skeleton className="h-6 w-32" />
+//               <Skeleton className="h-4 w-48 mt-2" />
+//             </CardHeader>
+//             <CardContent>
+//               <div className="space-y-4">
+//                 {[1, 2, 3, 4, 5].map((i) => (
+//                   <div key={i} className="flex items-center justify-between p-4 border rounded-lg">
+//                     <div>
+//                       <Skeleton className="h-5 w-24" />
+//                       <Skeleton className="h-4 w-32 mt-2" />
+//                     </div>
+//                     <div className="text-right">
+//                       <Skeleton className="h-5 w-16" />
+//                       <Skeleton className="h-4 w-24 mt-2" />
+//                     </div>
+//                   </div>
+//                 ))}
+//               </div>
+//             </CardContent>
+//           </Card>
+//         </div>
+//       </div>
+//     )
+//   }
 
   return (
     <div className="container mx-auto py-10">
@@ -107,14 +99,14 @@ export function ProfilePage({ user, stats, isLoading = false }: ProfilePageProps
             <h1 className="text-3xl font-bold">Profile</h1>
             <p className="text-muted-foreground">{user?.email}</p>
           </div>
-          <Button variant="outline">Edit Profile</Button>
+
         </div>
 
         <Tabs defaultValue="overview" className="w-full" onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-fit grid-cols-2">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="history">History</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
+
           </TabsList>
 
           <TabsContent value="overview" className="mt-6">
@@ -180,16 +172,26 @@ export function ProfilePage({ user, stats, isLoading = false }: ProfilePageProps
               <CardContent>
                 <div className="space-y-4">
                   {stats.length > 0 ? (
-                    stats.map((stat, index) => (
+                    stats.map((stat: any, index: any) => (
                       <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
-                        <div>
-                          <p className="font-medium">{stat.testType}</p>
+                        <div className="flex-1">
+                          <p className="font-medium">{stat.prompt.slice(0, 20)}...</p>
                           <p className="text-sm text-muted-foreground">{stat.timestamp}</p>
                         </div>
-                        <div className="text-right">
+                        <div className="text-right mx-4">
                           <p className="font-medium">{stat.wpm} WPM</p>
                           <p className="text-sm text-muted-foreground">{stat.accuracy}% accuracy</p>
                         </div>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setSelectedPrompt(stat.prompt)
+                            setIsDialogOpen(true)
+                          }}
+                        >
+                          View More
+                        </Button>
                       </div>
                     ))
                   ) : (
@@ -202,42 +204,22 @@ export function ProfilePage({ user, stats, isLoading = false }: ProfilePageProps
               </CardContent>
             </Card>
           </TabsContent>
-
-          <TabsContent value="settings" className="mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Account Settings</CardTitle>
-                <CardDescription>Manage your account settings and preferences</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between p-4 border rounded-lg">
-                    <div>
-                      <p className="font-medium">Email Notifications</p>
-                      <p className="text-sm text-muted-foreground">Receive email updates about your progress</p>
-                    </div>
-                    <Button variant="outline">Configure</Button>
-                  </div>
-                  <div className="flex items-center justify-between p-4 border rounded-lg">
-                    <div>
-                      <p className="font-medium">Theme</p>
-                      <p className="text-sm text-muted-foreground">Choose your preferred theme</p>
-                    </div>
-                    <Button variant="outline">Change</Button>
-                  </div>
-                  <div className="flex items-center justify-between p-4 border rounded-lg">
-                    <div>
-                      <p className="font-medium">Delete Account</p>
-                      <p className="text-sm text-muted-foreground">Permanently delete your account and all data</p>
-                    </div>
-                    <Button variant="destructive">Delete</Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
         </Tabs>
       </div>
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Test Prompt</DialogTitle>
+            <DialogDescription>
+              The full text of the typing test prompt
+            </DialogDescription>
+          </DialogHeader>
+          <div className="mt-4">
+            <p className="text-sm leading-relaxed">{selectedPrompt}</p>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

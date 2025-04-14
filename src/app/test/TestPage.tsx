@@ -2,27 +2,23 @@
 
 import Keyboard from 'react-simple-keyboard';
 import 'react-simple-keyboard/build/css/index.css';
-import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
-import {Label} from "@/components/ui/label";
-import React, {FormEvent, KeyboardEventHandler, useCallback, useEffect, useRef, useState} from "react";
-import {loginUser} from "@/app/(auth)/login/actions";
-import {toast} from "@/hooks/use-toast";
-import { useKeyPress } from "@uidotdev/usehooks";
+import React, {useEffect, useState} from "react";
 import {useKeyboard} from 'react-aria';
-import NumberFlow, {NumberFlowGroup, Value} from "@number-flow/react";
+import NumberFlow, {Value} from "@number-flow/react";
 import {
     Dialog, DialogClose,
     DialogContent,
-    DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle
 } from "@/components/ui/dialog";
+import { saveTest } from './actions';
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
-export function ResultsPage() {
+export function TestPage({prompt, user, is_benchmark, has_completed_daily_challenge}: {prompt: string, user: string, is_benchmark: boolean, has_completed_daily_challenge: boolean}) {
 
-    const words = "Anim irure"
+    const words = prompt
 
     const [events, setEvents] = React.useState<string>();
     const [currIndex, setCurrIndex] = useState<number>(0)
@@ -31,12 +27,38 @@ export function ResultsPage() {
     const [startTime, setStartTime] = useState<Date>()
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const [timeCompleted, setTimeCompleted] = useState<Date>()
+    const [totalKeystrokes, setTotalKeystrokes] = useState<number>(0)
+    const [correctKeystrokes, setCorrectKeystrokes] = useState<number>(0)
+    const [activeKey, setActiveKey] = useState<string>("")
 
-    let { keyboardProps } = useKeyboard({
-        onKeyDown: (e) =>
-            setEvents(
-                (events: any) => `${e.key}_${new Date().getMilliseconds()}`
-            ),
+    const { keyboardProps } = useKeyboard({
+        onKeyDown: (e) => {
+            // Ignore modifier and special keys
+            const ignoredKeys = [
+                "Shift", "Control", "Alt", "Meta",
+                "CapsLock", "Tab", "Enter", "ArrowLeft",
+                "ArrowRight", "ArrowUp", "ArrowDown",
+                "Home", "End", "PageUp", "PageDown",
+                "Insert", "Delete", "Escape", "F1", "F2",
+                "F3", "F4", "F5", "F6", "F7", "F8", "F9",
+                "F10", "F11", "F12"
+            ];
+
+            if (!ignoredKeys.includes(e.key)) {
+                setEvents((events: any) => `${e.key}_${new Date().getMilliseconds()}`);
+                setActiveKey(e.key.toLowerCase());
+
+                if (e.key !== 'Backspace') {
+                    setTotalKeystrokes(prev => prev + 1);
+                    if (words[currIndex] === e.key) {
+                        setCorrectKeystrokes(prev => prev + 1);
+                    }
+                }
+            }
+        },
+        onKeyUp: () => {
+            setActiveKey("");
+        }
     });
 
     useEffect(() => {
@@ -115,9 +137,30 @@ export function ResultsPage() {
         return typedWordIndex;
     };
 
+    const calculateAccuracy = () => {
+        if (totalKeystrokes === 0) return "0"
+        return ((correctKeystrokes / totalKeystrokes) * 100).toFixed(1)
+    }
 
     return (
         <div className={"flex flex-col gap-2 justify-between items-center w-full text-center"}>
+            {is_benchmark && (
+                <Alert className="mb-4">
+
+                    <AlertTitle>Benchmark Test</AlertTitle>
+                    <AlertDescription>
+                        This is your first test. Your results will be used as a baseline to track your progress.
+                    </AlertDescription>
+                </Alert>
+            )}
+            {has_completed_daily_challenge && (
+                <Alert className="mb-4">
+                    <AlertTitle>Daily Challenge</AlertTitle>
+                    <AlertDescription>
+                        You have completed the daily challenge.
+                    </AlertDescription>
+                </Alert>
+            )}
             <input autoFocus={true} className={'opacity-0'} onBlur={e => e.target.focus()}{...keyboardProps}/>
             <NumberFlow value={wpm.toString() as Value} className={'text-6xl font-semibold'} format={{ maximumFractionDigits: 0 }} />
             <p className={'opacity-50 font-medium -mt-2'}>WPM</p>
@@ -132,7 +175,30 @@ export function ResultsPage() {
                 </div>
 
                 <div className={'mt-40 w-full'}>
-                    <Keyboard physicalKeyboardHighlight={true}/>
+                    <Keyboard
+                        physicalKeyboardHighlight={true}
+                        layout={{
+                            default: [
+                                "q w e r t y u i o p [ ]",
+                                "a s d f g h j k l ; '",
+                                "z x c v b n m , . /",
+                                "{space}"
+                            ]
+                        }}
+                        display={{
+                            "{space}": "qwerty"
+                        }}
+                        buttonTheme={[
+                            {
+                                class: "spacebar",
+                                buttons: "{space}"
+                            },
+                            {
+                                class: "active-key",
+                                buttons: activeKey
+                            }
+                        ]}
+                    />
                 </div>
             </div>
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -153,10 +219,24 @@ export function ResultsPage() {
                             </p>
                             <p>{(wpm)}</p>
                         </div>
+                        <div className="flex justify-between items-center gap-4 text-nowrap">
+                            <p>
+                                Accuracy
+                            </p>
+                            <p>{calculateAccuracy()}%</p>
+                        </div>
                     </div>
                     <DialogFooter>
                         <DialogClose>
-                            <Button type="submit">Close</Button>
+                            <Button onClick={()=>{
+                                saveTest({
+                                    uuid: user,
+                                    time: (timeCompleted?.getTime()! - startTime?.getTime()!),
+                                    prompt: words,
+                                    accuracy: parseFloat(calculateAccuracy()),
+                                    wpm: parseFloat(wpm)
+                                })
+                            }} type="submit">Close</Button>
                         </DialogClose>
                     </DialogFooter>
                 </DialogContent>

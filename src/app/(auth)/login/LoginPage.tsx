@@ -23,9 +23,9 @@ export function LoginForm() {
 
         if(error) toast({title: 'Error Logging In', description: error.message})
 
-        router.push('/')
-
-
+        if(!error) {
+            router.push('/')
+        }
     }
 
     return (

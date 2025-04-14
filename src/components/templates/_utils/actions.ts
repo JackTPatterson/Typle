@@ -1,6 +1,8 @@
 'use server'
 
 import {createClient} from "@/db/sbserver";
+import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export const getUser = async() => {
     const supabase = await createClient()
@@ -9,4 +11,13 @@ export const getUser = async() => {
 
     return data;
 
+}
+
+export const signOut = async() => {
+    const supabase = await createClient()
+
+    await supabase.auth.signOut()
+
+    revalidatePath("/", "layout")
+    redirect("/login")
 }
