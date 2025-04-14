@@ -18,7 +18,7 @@ export const saveTest = async (test: {
     const config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: `http://192.168.1.177:8000/user/${test.uuid}/score`,
+        url: `http://127.0.0.1:8000/user/${test.uuid}/score`,
         headers: {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Credentials': 'true',
