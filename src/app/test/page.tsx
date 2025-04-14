@@ -39,7 +39,7 @@ const hasUserCompletedDailyChallenge = async (user: any) => {
     const today = new Date()
     const today_date = today.toISOString().split('T')[0]
 
-    const completed_today = tests?.filter((test: any) => new Date(test.completion_date).toISOString().split('T')[0] === today_date && tests.length >= 1)
+    const completed_today = tests?.filter((test: any) => new Date(test.completion_date).toISOString().split('T')[0] === today_date && tests.length >= 2)
 
     return completed_today?.length > 0
 }

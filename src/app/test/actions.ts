@@ -1,4 +1,5 @@
 import axios from "axios";
+import { redirect } from "next/navigation";
 
 export const saveTest = async (test: {
     uuid: string,
@@ -32,6 +33,7 @@ export const saveTest = async (test: {
     axios.request(config)
     .then((response) => {
     console.log(JSON.stringify(response.data));
+    redirect("/path"); 
     })
     .catch((error) => {
     console.log(error);
