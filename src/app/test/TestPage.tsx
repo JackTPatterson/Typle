@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { saveTest } from './actions';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import {Switch} from "@/components/ui/switch";
 
 export function TestPage({prompt, user, is_benchmark, has_completed_daily_challenge}: {prompt: string, user: string, is_benchmark: boolean, has_completed_daily_challenge: boolean}) {
 
@@ -30,6 +31,8 @@ export function TestPage({prompt, user, is_benchmark, has_completed_daily_challe
     const [totalKeystrokes, setTotalKeystrokes] = useState<number>(0)
     const [correctKeystrokes, setCorrectKeystrokes] = useState<number>(0)
     const [activeKey, setActiveKey] = useState<string>("")
+
+    const [isKeyboardLarge, setIsKeyboardLarge] = useState<boolean>(false)
 
     const { keyboardProps } = useKeyboard({
         onKeyDown: (e) => {
@@ -175,30 +178,37 @@ export function TestPage({prompt, user, is_benchmark, has_completed_daily_challe
                 </div>
 
                 <div className={'mt-40 w-full'}>
-                    <Keyboard
-                        physicalKeyboardHighlight={true}
-                        layout={{
-                            default: [
-                                "q w e r t y u i o p [ ]",
-                                "a s d f g h j k l ; '",
-                                "z x c v b n m , . /",
-                                "{space}"
-                            ]
-                        }}
-                        display={{
-                            "{space}": "qwerty"
-                        }}
-                        buttonTheme={[
-                            {
-                                class: "spacebar",
-                                buttons: "{space}"
-                            },
-                            {
-                                class: "active-key",
-                                buttons: activeKey
-                            }
-                        ]}
-                    />
+                    <div className={'flex space-x-2 items-center justify-center'}>
+                        <p className={'text-xs'}>Large Keyboard</p>
+                        <Switch onCheckedChange={setIsKeyboardLarge} checked={isKeyboardLarge}/>
+                    </div>
+                    <div className={isKeyboardLarge ? 'transform scale-125 mt-10' : ''}>
+                        <Keyboard
+                            physicalKeyboardHighlight={true}
+                            layout={{
+                                default: [
+                                    "q w e r t y u i o p [ ]",
+                                    "a s d f g h j k l ; '",
+                                    "z x c v b n m , . /",
+                                    "{space}"
+                                ]
+                            }}
+                            display={{
+                                "{space}": "qwerty"
+                            }}
+                            buttonTheme={[
+                                {
+                                    class: "spacebar",
+                                    buttons: "{space}"
+                                },
+                                {
+                                    class: "active-key",
+                                    buttons: activeKey
+                                }
+                            ]}
+                        />
+                    </div>
+
                 </div>
             </div>
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
