@@ -4,6 +4,8 @@
 
 body {
   font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--background);
+  color: var(--foreground);
 }
 
 @layer base {
@@ -247,4 +249,49 @@ body {
 
 .simple-keyboard .hg-button.spacebar.active-key {
   background: rgba(226,232,255,.15) !important;
+}
+
+
+[data-theme="light"] {
+  --background: #ffffff;
+  --foreground: #000000;
+  --muted: #f3f4f6; /* light muted background (gray-100) */
+  --muted-foreground: #6b7280; /* gray-500 */
+  --accent: #e0f2fe; /* very light blue */
+  --accent-foreground: #0c4a6e; /* strong blue */
+  --card: #ffffff;
+  --card-foreground: #000000;
+}
+
+[data-theme="dark"] {
+  --background: #111827;
+  --foreground: #f9fafb;
+  --muted: #1f2937; /* dark muted (gray-800) */
+  --muted-foreground: #9ca3af; /* gray-400 */
+  --accent: #334155; /* dark blue-gray */
+  --accent-foreground: #f9fafb; /* bright text */
+  --card: #1f2937;
+  --card-foreground: #f9fafb;
+}
+
+[data-theme="blue"] {
+  --background: #0e7490;
+  --foreground: #e0f2fe;
+  --muted: #164e63; /* dark cyan muted */
+  --muted-foreground: #bae6fd; /* light blue-muted */
+  --accent: #67e8f9; /* cyan accent */
+  --accent-foreground: #083344; /* very dark teal text */
+  --card: #0e7490;
+  --card-foreground: #e0f2fe;
+}
+
+[data-theme="solarized"] {
+  --background: #fdf6e3;
+  --foreground: #657b83;
+  --muted: #eee8d5; /* lighter beige muted */
+  --muted-foreground: #93a1a1; /* solarized-muted */
+  --accent: #b58900; /* solarized yellow accent */
+  --accent-foreground: #073642; /* dark navy text */
+  --card: #fdf6e3;
+  --card-foreground: #657b83;
 }

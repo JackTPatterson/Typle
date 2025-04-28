@@ -27,7 +27,7 @@ export default function Header({ user }: HeaderProps) {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white">
+    <header className="sticky top-0 z-50 w-full border-b bg-inherit">
       <div className="mx-auto max-w-7xl flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center space-x-8">
           <Link href="/" className="flex items-center space-x-2">
@@ -37,8 +37,8 @@ export default function Header({ user }: HeaderProps) {
 
             <Link
               href="/test"
-              className={`text-sm transition-colors hover:text-gray-600 ${
-                pathname === "/test" ? "text-gray-900" : "text-gray-500"
+              className={`text-sm transition-color ${
+                pathname === "/test" ? "opacity-75" : "opacity-50"
               }`}
             >
               Take Todays Test

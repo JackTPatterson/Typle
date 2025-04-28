@@ -13,6 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import {useTheme} from "@/hooks/use-theme";
 
 export function ProfilePage({ user, stats }: { user: any, stats: any }) {
   const [activeTab, setActiveTab] = useState('overview')
@@ -91,17 +92,19 @@ export function ProfilePage({ user, stats }: { user: any, stats: any }) {
 //     )
 //   }
 
+  const { theme, setTheme, availableThemes } = useTheme();
+
+
   return (
-    <div className="container mx-auto py-10">
-      <div className="flex flex-col gap-8">
-        <div className="flex justify-between items-center">
+    <div className="container mx-auto py-10 w-full">
+      <div className="flex flex-col gap-8 w-full">
+        <div className="flex justify-between items-center w-full">
           <div>
             <h1 className="text-3xl font-bold">Profile</h1>
             <p className="text-muted-foreground">{user?.email}</p>
           </div>
 
         </div>
-
         <Tabs defaultValue="overview" className="w-full" onValueChange={setActiveTab}>
           <TabsList className="grid w-fit grid-cols-2">
             <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -220,6 +223,15 @@ export function ProfilePage({ user, stats }: { user: any, stats: any }) {
           </div>
         </DialogContent>
       </Dialog>
+      <Tabs defaultValue={theme} value={theme} onValueChange={(val) => setTheme(val as any)} className="w-full mt-4">
+        <TabsList className="grid w-fit grid-cols-2 sm:grid-cols-4">
+          {availableThemes.map((t) => (
+              <TabsTrigger key={t} value={t}>
+                {t.charAt(0).toUpperCase() + t.slice(1)}
+              </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
     </div>
   )
 }
