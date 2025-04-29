@@ -24,11 +24,11 @@ const prompt = async (user: any) => {
     const user_level = await getUserLevel(user)
     console.log(user_level)
     if(await isBenchmark()){
-        const response = await axios.get('http://192.168.1.177:8000/prompt/benchmark')
+        const response = await axios.get('http://127.0.0.1:8000/prompt/benchmark')
         return response.data.prompt
     }
     else{
-        const response = await axios.get(`http://192.168.1.177:8000/prompt/${user_level?.toLowerCase()}`)
+        const response = await axios.get(`http://127.0.0.1:8000/prompt/${user_level?.toLowerCase()}`)
         return response.data.prompt
     }
 
