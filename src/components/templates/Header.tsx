@@ -56,7 +56,7 @@ export default function Header({ user }: HeaderProps) {
                     <UserCircle />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuContent align="end" className="w-56 !bg-[var(--accent)] border-0">
                 <DropdownMenuLabel>{user.email}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>

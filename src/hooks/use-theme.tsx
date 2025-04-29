@@ -1,32 +1,42 @@
-// hooks/useTheme.ts
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-export type Theme = 'light' | 'dark' | 'blue' | 'solarized';
+export type Theme = "light" | "dark" | "blue" | "solarized";
 
-const themes: Theme[] = ['light', 'dark', 'blue', 'solarized'];
+const themes: Theme[] = ["light", "dark", "blue", "solarized"];
 
 export function useTheme() {
-    const [theme, setTheme] = useState<Theme>('light');
+    const [theme, setThemeState] = useState<Theme>("light");
+    const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const storedTheme = localStorage.getItem('theme') as Theme;
+        if (typeof window !== "undefined") {
+            const storedTheme = localStorage.getItem("theme") as Theme | null;
+
             if (storedTheme && themes.includes(storedTheme)) {
-                setTheme(storedTheme);
-                document.documentElement.setAttribute('data-theme', storedTheme);
+                document.documentElement.setAttribute("data-theme", storedTheme);
+                setThemeState(storedTheme);
+            } else {
+                // 🛠 Fix: actually set light theme if missing
+                localStorage.setItem("theme", "light");
+                document.documentElement.setAttribute("data-theme", "light");
+                setThemeState("light");
             }
+
+            setIsLoaded(true);
         }
     }, []);
 
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            localStorage.setItem('theme', theme);
-            document.documentElement.setAttribute('data-theme', theme);
+    const setTheme = (newTheme: Theme) => {
+        if (themes.includes(newTheme)) {
+            localStorage.setItem("theme", newTheme);
+            document.documentElement.setAttribute("data-theme", newTheme);
+            setThemeState(newTheme);
         }
-    }, [theme]);
+    };
 
     const toggleTheme = () => {
-        setTheme(prev => {
+        //@ts-ignore
+        setTheme((prev: any) => {
             const currentIndex = themes.indexOf(prev);
             const nextIndex = (currentIndex + 1) % themes.length;
             return themes[nextIndex];
@@ -38,5 +48,6 @@ export function useTheme() {
         setTheme,
         toggleTheme,
         availableThemes: themes,
+        isLoaded,
     };
 }

@@ -17,7 +17,7 @@ import { saveTest } from './actions';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useRouter } from 'next/navigation';
 import {Switch} from "@/components/ui/switch";
-import {Volume2} from "lucide-react";
+import {Volume, Volume2} from "lucide-react";
 
 export function TestPage({prompt, user, is_benchmark, has_completed_daily_challenge}: {prompt: string, user: string, is_benchmark: boolean, has_completed_daily_challenge: boolean}) {
 

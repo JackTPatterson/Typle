@@ -20,7 +20,7 @@ export default function Register(){
         </div>
 
         <div className="relative hidden bg-muted lg:block bg-blue-100">
-        <div className="relative flex h-screen w-full items-center justify-center overflow-hidden rounded-lg border bg-background p-20">
+        <div className="relative flex h-screen w-full items-center justify-center overflow-hidden rounded-lg bg-background p-20">
             <AnimatedGridPattern
                 numSquares={30}
                 maxOpacity={0.1}
@@ -32,7 +32,7 @@ export default function Register(){
                 )}
             />
         </div>
-            <TypingAnimation className={'absolute lg:left-16 xl:left-32 lg:max-w-sm xl:max-w-lg leading-10 top-40 text-left '} >Take today&apos;s typing challenge. You only get one shot per day, so make it count!</TypingAnimation>
+            <TypingAnimation className={'absolute lg:left-16 xl:left-32 lg:max-w-sm xl:max-w-lg !leading-snug top-40 text-left '} >Take today&apos;s typing challenge. You only get one shot per day, so make it count!</TypingAnimation>
         </div>
 
     </div>

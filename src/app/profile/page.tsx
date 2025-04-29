@@ -11,6 +11,7 @@ export default async function Page() {
 
   // Get current user
   const { data: { user } } = await supabase.auth.getUser()
+  const streak = (await supabase.from('profiles').select('streak_length').eq('id', user?.id).single()).data?.streak_length ?? 0
 
   // If no user is logged in, redirect to login page
   if (!user) {
@@ -21,5 +22,5 @@ export default async function Page() {
 
 
 
-  return <ProfilePage user={user} stats={stats}/>
+  return <ProfilePage user={user} stats={stats} streak={streak}/>
 }

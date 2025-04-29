@@ -1,5 +1,5 @@
 
-import {TestPage} from "@/app/test/TestPage";
+import {TestPage} from "@/app/testtest/TestPage";
 import type {Metadata} from "next";
 import {getUser} from "@/lib/auth";
 import axios from "axios";
@@ -13,25 +13,6 @@ export const metadata: Metadata = {
 const isBenchmark = async () => {
     const user = await getUser(true)
     return user?.tests?.length === 0
-}
-
-const getUserLevel = async (user: any) => {
-    const user_level: "Beginner" | "Intermediate" | "Expert" = user?.skill_level
-    return user_level
-}
-
-const prompt = async (user: any) => {
-    const user_level = await getUserLevel(user)
-    console.log(user_level)
-    if(await isBenchmark()){
-        const response = await axios.get('http://192.168.1.177:8000/prompt/benchmark')
-        return response.data.prompt
-    }
-    else{
-        const response = await axios.get(`http://192.168.1.177:8000/prompt/${user_level?.toLowerCase()}`)
-        return response.data.prompt
-    }
-
 }
 
 const hasUserCompletedDailyChallenge = async (user: any) => {
@@ -63,6 +44,6 @@ export default async function Login(){
     }
 
     return <div className={'h-screen'}>
-        <TestPage user={user_id} prompt={await prompt(user)} is_benchmark={is_benchmark} has_completed_daily_challenge={has_completed_daily_challenge}/>
+        <TestPage user={user_id} prompt={"This is a test"} is_benchmark={is_benchmark} has_completed_daily_challenge={has_completed_daily_challenge}/>
     </div>
 }

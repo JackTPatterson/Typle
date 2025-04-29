@@ -46,7 +46,7 @@ export function LoginForm() {
                                 </div>
                                 <Input name={'password'} id="password" type="password" required />
                             </div>
-                            <Button type="submit" className="w-full">
+                            <Button type="submit" className="w-full" variant={'default'}>
                                 Login
                             </Button>
                             <div className="text-center text-sm">

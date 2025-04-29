@@ -14,6 +14,20 @@ export const metadata: Metadata = {
   description: "Learn to type faster",
 };
 
+function setInitialTheme() {
+  try {
+    const storedTheme = localStorage.getItem('theme');
+    if (storedTheme) {
+      document.documentElement.setAttribute('data-theme', storedTheme);
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light'); // fallback default
+    }
+  } catch (e) {
+    console.error('Theme error', e);
+  }
+}
+
+
 export default async function RootLayout({
   children,
 }: {
@@ -25,6 +39,14 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
+    <head>
+      {/* EARLY THEME SCRIPT */}
+      <script
+          dangerouslySetInnerHTML={{
+            __html: `(${setInitialTheme.toString()})()`,
+          }}
+      />
+    </head>
       <body className={inter.className}>
         <Header user={user} />
         {children}

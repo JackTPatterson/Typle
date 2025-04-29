@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog"
 import {useTheme} from "@/hooks/use-theme";
 
-export function ProfilePage({ user, stats }: { user: any, stats: any }) {
+export function ProfilePage({ user, stats, streak }: Readonly<{ user: any, stats: any , streak: number}>) {
   const [activeTab, setActiveTab] = useState('overview')
   const [selectedPrompt, setSelectedPrompt] = useState<string | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -32,67 +32,10 @@ export function ProfilePage({ user, stats }: { user: any, stats: any }) {
     ? Math.max(...stats.map((s: any) => s.wpm))
     : 0
 
-//   if (isLoading) {
-//     return (
-//       <div className="container mx-auto py-10">
-//         <div className="flex flex-col gap-8">
-//           <div>
-//             <Skeleton className="h-10 w-48" />
-//             <Skeleton className="h-5 w-64 mt-2" />
-//           </div>
-
-//           <div className="grid gap-4 md:grid-cols-3">
-//             {[1, 2, 3].map((i) => (
-//               <Card key={i}>
-//                 <CardHeader>
-//                   <Skeleton className="h-6 w-32" />
-//                   <Skeleton className="h-4 w-48 mt-2" />
-//                 </CardHeader>
-//                 <CardContent>
-//                   <Skeleton className="h-10 w-24" />
-//                 </CardContent>
-//               </Card>
-//             ))}
-//           </div>
-
-//           <Card>
-//             <CardHeader>
-//               <Skeleton className="h-6 w-40" />
-//               <Skeleton className="h-4 w-56 mt-2" />
-//             </CardHeader>
-//             <CardContent>
-//               <Skeleton className="h-[300px] w-full" />
-//             </CardContent>
-//           </Card>
-
-//           <Card>
-//             <CardHeader>
-//               <Skeleton className="h-6 w-32" />
-//               <Skeleton className="h-4 w-48 mt-2" />
-//             </CardHeader>
-//             <CardContent>
-//               <div className="space-y-4">
-//                 {[1, 2, 3, 4, 5].map((i) => (
-//                   <div key={i} className="flex items-center justify-between p-4 border rounded-lg">
-//                     <div>
-//                       <Skeleton className="h-5 w-24" />
-//                       <Skeleton className="h-4 w-32 mt-2" />
-//                     </div>
-//                     <div className="text-right">
-//                       <Skeleton className="h-5 w-16" />
-//                       <Skeleton className="h-4 w-24 mt-2" />
-//                     </div>
-//                   </div>
-//                 ))}
-//               </div>
-//             </CardContent>
-//           </Card>
-//         </div>
-//       </div>
-//     )
-//   }
 
   const { theme, setTheme, availableThemes } = useTheme();
+
+  console.log(user)
 
 
   return (
@@ -113,7 +56,16 @@ export function ProfilePage({ user, stats }: { user: any, stats: any }) {
           </TabsList>
 
           <TabsContent value="overview" className="mt-6">
-            <div className="grid gap-4 md:grid-cols-3">
+            <div className="grid gap-4 md:grid-cols-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Streak</CardTitle>
+                  <CardDescription>Tests completed consecutively</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-3xl font-bold">{streak?.toString()} Days</p>
+                </CardContent>
+              </Card>
               <Card>
                 <CardHeader>
                   <CardTitle>Average WPM</CardTitle>
