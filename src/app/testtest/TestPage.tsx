@@ -17,9 +17,22 @@ import { saveTest } from './actions';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useRouter } from 'next/navigation';
 import {Switch} from "@/components/ui/switch";
-import {Volume, Volume2} from "lucide-react";
+import {Volume2} from "lucide-react";
+import AudioStream from "@/lib/speech";
 
-export function TestPage({prompt, user, is_benchmark, has_completed_daily_challenge}: {prompt: string, user: string, is_benchmark: boolean, has_completed_daily_challenge: boolean}) {
+export function TestPage({prompt, user, is_benchmark, has_completed_daily_challenge}: Readonly<{
+    prompt: string,
+    user: string,
+    is_benchmark: boolean,
+    has_completed_daily_challenge: boolean
+}>) {
+
+    const voiceId = "21m00Tcm4TlvDq8ikWAM";
+    const apiKey = "sk_e94fcc3696aa159dfe7987242d283bd814d0f82a1b0dd101";
+    const voiceSettings = {
+        stability: 0,
+        similarity_boost: 0,
+    };
 
     const words = prompt
     const router = useRouter()
@@ -187,9 +200,12 @@ export function TestPage({prompt, user, is_benchmark, has_completed_daily_challe
                             <Switch onCheckedChange={setIsKeyboardLarge} checked={isKeyboardLarge}/>
                         </div>
                         <div>
-                            <Button >
-                                <Volume2/>
-                            </Button>
+                            <AudioStream
+                                voiceId={voiceId}
+                                text={prompt}
+                                apiKey={apiKey}
+                                voiceSettings={voiceSettings}
+                            />
                         </div>
 
                     </div>

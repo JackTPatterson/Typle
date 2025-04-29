@@ -16,7 +16,6 @@ export function useTheme() {
                 document.documentElement.setAttribute("data-theme", storedTheme);
                 setThemeState(storedTheme);
             } else {
-                // 🛠 Fix: actually set light theme if missing
                 localStorage.setItem("theme", "light");
                 document.documentElement.setAttribute("data-theme", "light");
                 setThemeState("light");
